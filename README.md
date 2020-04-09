@@ -1,29 +1,28 @@
-# README #
+### Google Project Audit Log Sinks for EDP Projects
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Creates Google Storage Bucket and Log Export for EDP projects.
 
-### What is this repository for? ###
+#### Dependencies
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+1. GCP Project.
+2. Access, minimum roles list is specified below.
 
-### How do I get set up? ###
+roles/editor (shared logs project, where the bucket is created)
+roles/logging.configWriter (log export project, from where the logs are collected)
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+It is acceptable to use the same project for exports and destinations.
 
-### Contribution guidelines ###
+#### Example Terraform Variables
 
-* Writing tests
-* Code review
-* Other guidelines
+    log_export_project_id = "ok-data-proj"
+    log_export_name       = "ok-data-proj-logs"
 
-### Who do I talk to? ###
+    #for example:
+    log_export_filter_string = <<FILTER
+resource.type = gce_instance OR
+resource.type = project
+FILTER
 
-* Repo owner or admin
-* Other community or team contact
+    destination_project_id            = "ok-logs-proj"
+    destination_bucket_location       = "us"
+    destination_bucket_name           = "logs-ok-data-proj"
